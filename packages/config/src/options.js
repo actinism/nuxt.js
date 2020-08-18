@@ -115,9 +115,9 @@ export function getNuxtConfig (_options) {
     options.router.base += '/'
   }
 
-  // Alias export to generate
-  // TODO: switch to export by default for nuxt3
+  // Legacy support for export
   if (options.export) {
+    consola.warn('export option is deprecated and will be removed in a future version! Please switch to generate')
     options.generate = defu(options.export, options.generate)
   }
   exports.export = options.generate
@@ -461,7 +461,7 @@ export function getNuxtConfig (_options) {
   }
   if (options.createRequire === 'esm') {
     const esm = require('esm')
-    options.createRequire = module => esm(module)
+    options.createRequire = module => esm(module, { cache: false })
   } else if (options.createRequire === 'jiti') {
     const jiti = require('jiti')
     options.createRequire = module => jiti(module.filename)
